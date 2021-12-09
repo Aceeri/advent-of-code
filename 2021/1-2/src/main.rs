@@ -7,49 +7,31 @@ use std::{
 };
 
 #[derive(Debug, Clone)]
-struct Readings<const WINDOW: usize> {
+struct Readings {
     increasing: u64,
-    window: VecDeque<u64>, // FIFO queue
-}
-
-impl<const WINDOW: usize> Readings<WINDOW> {
-    pub fn read_initial_window(&mut self, mut iter: impl Iterator<Item = u64>) {
-        for i in 0..WINDOW {
-            self.window.push_back(iter.next().unwrap());
-        }
-    }
+    previous: u64,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string("input")?;
     let mut readings = contents
         .lines()
-        .map(|line| line.parse::<u64>().expect("could not parse integer"));
+        .map(|line| line.parse::<u64>().expect("could not parse integer"))
+        .collect::<Vec<u64>>();
 
-    let mut state = Readings::<3> {
+    let mut state = Readings {
         increasing: 0,
-        window: VecDeque::new(),
+        previous: u64::MAX,
     };
 
-    state.read_initial_window(&mut readings);
+    state = readings.as_slice().windows(3).fold(state, |mut state, window| {
+        let window_sum: u64 = window.iter().sum();
 
-    state = readings.fold(state, |mut state, reading| {
-        let previous_sum: u64 = state.window.iter().sum();
-        state.window.pop_front();
-        state.window.push_back(reading);
-        let current_sum: u64 = state.window.iter().sum();
-        print!("{} > {}", previous_sum, current_sum);
-
-        if current_sum > previous_sum {
-            print!(" (increased)");
+        if window_sum > state.previous {
             state.increasing += 1;
-        } else if current_sum == previous_sum {
-            print!(" (no change)");
-        } else if current_sum < previous_sum {
-            print!(" (decreased)");
         }
-        println!();
 
+        state.previous = window_sum;
         state
     });
 
