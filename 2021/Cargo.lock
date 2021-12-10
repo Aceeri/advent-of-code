@@ -15,6 +15,10 @@ name = "advent-of-code-2021-10-1"
 version = "0.1.0"
 
 [[package]]
+name = "advent-of-code-2021-10-2"
+version = "0.1.0"
+
+[[package]]
 name = "advent-of-code-2021-4-1"
 version = "0.1.0"
 
