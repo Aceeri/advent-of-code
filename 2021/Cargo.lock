@@ -34,12 +34,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "advent-of-code-2021-5-2"
+version = "0.1.0"
+dependencies = [
+ "regex",
+]
+
+[[package]]
 name = "advent-of-code-2021-6-1"
 version = "0.1.0"
 
 [[package]]
 name = "advent-of-code-2021-6-2"
 version = "0.1.0"
+
+[[package]]
+name = "advent-of-code-2021-8-1"
+version = "0.1.0"
+dependencies = [
+ "regex",
+]
 
 [[package]]
 name = "advent-of-code-2021-9-1"
